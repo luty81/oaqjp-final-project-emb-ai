@@ -26,5 +26,3 @@ def emotion_detector(text_to_analyse):
     except Exception as ex:
         traceback.print_exc()
         print(response.text)
-
-print(emotion_detector("I am loving this technology"))
