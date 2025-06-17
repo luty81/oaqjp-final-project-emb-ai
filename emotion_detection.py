@@ -1,4 +1,4 @@
-import requests
+import requests, json, traceback
 
 def emotion_detector(text_to_analyse):
     response = requests.post(
@@ -11,6 +11,20 @@ def emotion_detector(text_to_analyse):
     )
     try:
         response.raise_for_status()
-        return response.text
-    except:
+        data = json.loads(response.text)
+        emotion_data = data.get("emotionPredictions")[0].get("emotion")
+
+        sorted_emotions = sorted(emotion_data.items(), key=lambda x: x[1])
+        return json.dumps({
+            "anger": emotion_data.get("anger"),
+            "disgust": emotion_data.get("disgust"),
+            "fear": emotion_data.get("fear"),
+            "joy": emotion_data.get("joy"),
+            "sadness": emotion_data.get("sadness"),
+            "dominan_emotion": sorted_emotions[-1][0]
+        })
+    except Exception as ex:
+        traceback.print_exc()
         print(response.text)
+
+print(emotion_detector("I am loving this technology"))
