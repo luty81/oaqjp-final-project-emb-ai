@@ -12,6 +12,7 @@ def emotion_detector(text_to_analyse):
     try:
         response.raise_for_status()
         data = json.loads(response.text)
+        print(data)
         emotion_data = data.get("emotionPredictions")[0].get("emotion")
 
         sorted_emotions = sorted(emotion_data.items(), key=lambda x: x[1])
@@ -21,8 +22,7 @@ def emotion_detector(text_to_analyse):
             "fear": emotion_data.get("fear"),
             "joy": emotion_data.get("joy"),
             "sadness": emotion_data.get("sadness"),
-            "dominan_emotion": sorted_emotions[-1][0]
+            "dominant_emotion": sorted_emotions[-1][0]
         })
     except Exception as ex:
-        traceback.print_exc()
-        print(response.text)
+        raise ex
